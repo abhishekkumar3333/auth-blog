@@ -5,10 +5,9 @@ import { registerUserSchema, loginUserSchema } from "../validations/user.validat
 import { authMiddleware } from "../middleware/auth.middleware.js";
 import { upload } from "../middleware/upload.middleware.js";
 
-const userRouter = express.Router();
+export const userRouter = express.Router();
 userRouter.post("/register", validate(registerUserSchema), registerUser);
 userRouter.post("/login", validate(loginUserSchema), loginUser);
 userRouter.put("/profile", authMiddleware, upload.single("profilePicture"), updateProfile);
 userRouter.post("/follow/:id", authMiddleware, followUser);
 userRouter.post("/unfollow/:id", authMiddleware, unFollowUser);
-export default userRouter;  

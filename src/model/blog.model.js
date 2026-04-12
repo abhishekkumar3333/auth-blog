@@ -16,15 +16,15 @@ const blogSchema = mongoose.Schema({
     },
     author: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "user"
+        ref: "User"
     },
     likes: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "user"
+        ref: "User"
     }],
     dislikes: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "user"
+        ref: "User"
     }],
 
 }, {
@@ -32,6 +32,6 @@ const blogSchema = mongoose.Schema({
 }
 );
 
-const Blog = mongoose.model("blog", blogSchema)
+const Blog = mongoose.model("Blog", blogSchema)
 
 export default Blog

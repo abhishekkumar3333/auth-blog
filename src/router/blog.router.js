@@ -5,10 +5,10 @@ import { createBlogValidation } from "../validations/blog.validation.js";
 import { upload } from "../middleware/upload.middleware.js";
 import { authMiddleware } from "../middleware/auth.middleware.js";
 
-const blogRouter = express.Router();
+export const blogRouter = express.Router();
 
 blogRouter.post("/create", upload.single("image"), validate(createBlogValidation), createBlog);
 blogRouter.post("/like/:id", authMiddleware, toggleLikeBlog);
 blogRouter.post("/dislike/:id", authMiddleware, toggleLikeBlog);
 
-export default blogRouter;
+
