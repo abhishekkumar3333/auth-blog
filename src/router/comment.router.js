@@ -1,9 +1,12 @@
 import express from "express";
-import { addComment, deleteComment, getComments } from "../controller/comment.controller.js";
+import { addComment, deleteComment, getComments, replyComment, toggleCommentLike, getCommentsWithPagination } from "../controller/comment.controller.js";
 import { authMiddleware } from "../middleware/auth.middleware.js";
 import { validate } from "../middleware/validate.middleware.js";
 import { addCommentValidation } from "../validations/comment.validation.js";
 export const commentRouter = express.Router();
 commentRouter.post("/add/:id", authMiddleware, validate(addCommentValidation), addComment);
+commentRouter.post("/like/:id", authMiddleware, toggleCommentLike);
 commentRouter.get("/get/:id", getComments);
 commentRouter.delete("/delete/:id", authMiddleware, deleteComment);
+commentRouter.post("/reply/:id", authMiddleware, replyComment);
+commentRouter.get("/getall/:id", getCommentsWithPagination);

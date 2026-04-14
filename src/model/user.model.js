@@ -19,6 +19,12 @@ const UserSchema = mongoose.Schema({
         type: String,
         default: ""
     },
+    bookMarks: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Blog"
+        }
+    ],
     profilePicture: {
         type: String,
         default: ""

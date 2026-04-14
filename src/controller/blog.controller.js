@@ -76,3 +76,31 @@ export const toggleLikeBlog = async (req, res) => {
         });
     }
 };
+
+export const searchBlog = async (req, res) => {
+    try {
+        const query = req.query.q;
+        const blog = await Blog.find({
+            $or: [
+                {
+                    title: { $regex: query, $options: "i" }
+                },
+                {
+                    description: { $regex: query, $options: "i" }
+                }
+            ]
+        });
+
+        return res.status(200).json({
+            success: true,
+            message: "Blog search successfully",
+            blog
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error"
+        })
+    }
+}

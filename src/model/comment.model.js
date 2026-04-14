@@ -14,6 +14,16 @@ export const commentSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Blog",
         required: true
+    },
+    parentComment: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Comment",
+        default: null
+    },
+    likes: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: "User",
+        default: []
     }
 
 },

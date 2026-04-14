@@ -206,3 +206,56 @@ export const unFollowUser = async (req, res) => {
         })
     }
 }
+
+export const toggleBookMark = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const blogId = req.params.id;
+
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "user not found"
+            })
+        }
+        const isBookMarked = user.bookMarks.includes(blogId);
+        if (!isBookMarked) {
+            user.bookMarks.push(blogId)
+        } else {
+            user.bookMarks.pull(blogId)
+        }
+        await user.save();
+        return res.status(200).json({
+            success: true,
+            message: isBookMarked ? "Bookmark removed successfully" : "Bookmark added successfully"
+        })
+    } catch (error) {
+        console.error("BOOKMARK ERROR:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error"
+        })
+    }
+}
+
+export const getBookMark = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const user = await User.findById(userId)
+            .populate("bookMarks")
+
+        return res.status(200).json({
+            success: true,
+            message: "Bookmark fetched successfully",
+            data: user.bookMarks
+        })
+
+    } catch (error) {
+        console.error("BOOKMARK ERROR:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error"
+        })
+    }
+}
