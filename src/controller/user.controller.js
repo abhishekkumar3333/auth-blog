@@ -112,100 +112,132 @@ export const updateProfile = async (req, res) => {
 
 export const followUser = async (req, res) => {
     try {
-        const loggedInUserId = req.user.id;
+        const loggedInUserId = req.user?.id;
         const targetUserId = req.params.id;
 
-        if (loggedInUserId === targetUserId) {
+        if (!loggedInUserId) {
+            return res.status(401).json({ message: "Not authenticated" });
+        }
+
+        if (loggedInUserId.toString() === targetUserId.toString()) {
             return res.status(400).json({
                 message: "You cannot follow yourself"
-            })
-        };
-        if (!mongoose.Types.ObjectId.isValid(loggedInUserId) || !mongoose.Types.ObjectId.isValid(targetUserId)) {
-            return res.status(400).json({ message: "Invalid User ID format" });
+            });
         }
+
         const currentUser = await User.findById(loggedInUserId);
         const targetUser = await User.findById(targetUserId);
 
-        if (!currentUser) {
-            return res.status(404).json({ message: "Current User Not Found" });
+        if (!currentUser || !targetUser) {
+            return res.status(404).json({
+                message: "User not found"
+            });
         }
 
-        if (!targetUser) {
-            return res.status(404).json({
-                message: "Target User Not Found"
-            })
-        };
-        if (currentUser.following.includes(targetUserId)) {
+        const isAlreadyFollowing = currentUser.following.some(
+            (id) => id.toString() === targetUserId.toString()
+        );
+
+        if (isAlreadyFollowing) {
             return res.status(400).json({
                 message: "Already following"
-            })
-        };
+            });
+        }
+
         currentUser.following.push(targetUserId);
         targetUser.followers.push(loggedInUserId);
+
         await currentUser.save();
         await targetUser.save();
+
         return res.status(200).json({
             success: true,
             message: "User followed successfully"
-        })
+        });
 
     } catch (error) {
         console.error("FOLLOW ERROR:", error);
         return res.status(500).json({
-            success: false,
             message: "Internal Server Error"
-        })
+        });
     }
-
-}
+};
 
 export const unFollowUser = async (req, res) => {
     try {
-        const loggedInUserId = req.user.id;
+        const loggedInUserId = req.user?.id;
         const targetUserId = req.params.id;
 
-        if (loggedInUserId === targetUserId) {
-            return res.status(400).json({
-                message: "You cannot unfollow yourself"
-            })
-        };
-        if (!mongoose.Types.ObjectId.isValid(loggedInUserId) || !mongoose.Types.ObjectId.isValid(targetUserId)) {
-            return res.status(400).json({ message: "Invalid User ID format" });
+        console.log("Unfollow Request:", {
+            loggedInUserId,
+            targetUserId
+        });
+
+        if (!loggedInUserId) {
+            return res.status(401).json({
+                success: false,
+                message: "Not authenticated"
+            });
         }
+
+        if (loggedInUserId.toString() === targetUserId.toString()) {
+            return res.status(400).json({
+                success: false,
+                message: "You cannot unfollow yourself"
+            });
+        }
+
+        if (
+            !mongoose.Types.ObjectId.isValid(loggedInUserId) ||
+            !mongoose.Types.ObjectId.isValid(targetUserId)
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid User ID format"
+            });
+        }
+
         const currentUser = await User.findById(loggedInUserId);
         const targetUser = await User.findById(targetUserId);
 
-        if (!currentUser) {
-            return res.status(404).json({ message: "Current User Not Found" });
+        if (!currentUser || !targetUser) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
         }
 
-        if (!targetUser) {
-            return res.status(404).json({
-                message: "Target User Not Found"
-            })
-        };
-        if (!currentUser.following.includes(targetUserId)) {
+        const isFollowing = currentUser.following.some(
+            (id) => id.toString() === targetUserId.toString()
+        );
+
+        if (!isFollowing) {
             return res.status(400).json({
-                message: "Not following"
-            })
-        };
+                success: false,
+                message: "You are not following this user"
+            });
+        }
+
         currentUser.following.pull(targetUserId);
         targetUser.followers.pull(loggedInUserId);
+
         await currentUser.save();
         await targetUser.save();
+
         return res.status(200).json({
             success: true,
             message: "User unfollowed successfully"
-        })
+        });
 
     } catch (error) {
         console.error("UNFOLLOW ERROR:", error);
+
         return res.status(500).json({
             success: false,
             message: "Internal Server Error"
-        })
+        });
     }
-}
+};
 
 export const toggleBookMark = async (req, res) => {
     try {
@@ -253,6 +285,29 @@ export const getBookMark = async (req, res) => {
 
     } catch (error) {
         console.error("BOOKMARK ERROR:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error"
+        })
+    }
+}
+
+export const getProfile = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const user = await User.findById(userId).select('-password');
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            })
+        }
+        return res.status(200).json({
+            success: true,
+            data: user
+        })
+    } catch (error) {
+        console.error("GET PROFILE ERROR:", error);
         return res.status(500).json({
             success: false,
             message: "Internal Server Error"

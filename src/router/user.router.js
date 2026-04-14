@@ -1,5 +1,5 @@
 import express from "express";
-import { registerUser, loginUser, updateProfile, followUser, unFollowUser, toggleBookMark, getBookMark } from "../controller/user.controller.js";
+import { registerUser, loginUser, updateProfile, followUser, unFollowUser, toggleBookMark, getBookMark, getProfile } from "../controller/user.controller.js";
 import { validate } from "../middleware/validate.middleware.js";
 import { registerUserSchema, loginUserSchema } from "../validations/user.validation.js";
 import { authMiddleware } from "../middleware/auth.middleware.js";
@@ -13,3 +13,4 @@ userRouter.post("/follow/:id", authMiddleware, followUser);
 userRouter.post("/unfollow/:id", authMiddleware, unFollowUser);
 userRouter.post("/bookmark/:id", authMiddleware, toggleBookMark);
 userRouter.get("/bookmarks", authMiddleware, getBookMark);
+userRouter.get("/me", authMiddleware, getProfile);
