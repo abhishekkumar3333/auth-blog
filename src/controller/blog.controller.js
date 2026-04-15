@@ -1,4 +1,5 @@
 import Blog from "../model/blog.model.js";
+import Comment from "../model/comment.model.js";
 
 export const createBlog = async (req, res) => {
     try {
@@ -82,16 +83,51 @@ export const toggleLikeBlog = async (req, res) => {
 export const searchBlog = async (req, res) => {
     try {
         const query = req.query.q;
-        const blogs = await Blog.find({
-            $or: [
-                {
-                    title: { $regex: query, $options: "i" }
-                },
-                {
-                    description: { $regex: query, $options: "i" }
+        const blogs = await Blog.aggregate([
+            {
+                $match: {
+                    $or: [
+                        { title: { $regex: query, $options: "i" } },
+                        { description: { $regex: query, $options: "i" } }
+                    ]
                 }
-            ]
-        }).populate("author", "userName profilePicture");
+            },
+            {
+                $lookup: {
+                    from: "comments",
+                    localField: "_id",
+                    foreignField: "blog",
+                    as: "comments"
+                }
+            },
+            {
+                $addFields: {
+                    commentsCount: { $size: "$comments" },
+                    likesCount: { $size: { $ifNull: ["$likes", []] } }
+                }
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "author",
+                    foreignField: "_id",
+                    as: "author"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$author",
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $project: {
+                    "author.password": 0,
+                    "author.email": 0,
+                    "comments": 0
+                }
+            }
+        ]);
 
         return res.status(200).json({
             success: true,
@@ -119,6 +155,19 @@ export const getTrendingBlogs = async (req, res) => {
             },
             {
                 $lookup: {
+                    from: "comments",
+                    localField: "_id",
+                    foreignField: "blog",
+                    as: "comments"
+                }
+            },
+            {
+                $addFields: {
+                    commentsCount: { $size: "$comments" }
+                }
+            },
+            {
+                $lookup: {
                     from: "users",
                     localField: "author",
                     foreignField: "_id",
@@ -134,7 +183,8 @@ export const getTrendingBlogs = async (req, res) => {
             {
                 $project: {
                     "author.password": 0,
-                    "author.email": 0
+                    "author.email": 0,
+                    "comments": 0
                 }
             },
             {
@@ -167,9 +217,16 @@ export const getBlogById = async (req, res) => {
                 message: "Blog not found"
             });
         }
+
+        const commentsCount = await Comment.countDocuments({ blog: req.params.id });
+
+        const blogData = blog.toObject();
+        blogData.commentsCount = commentsCount;
+        blogData.likesCount = blog.likes?.length || 0;
+
         return res.status(200).json({
             success: true,
-            blog
+            blog: blogData
         });
     } catch (error) {
         console.error(error);
@@ -182,10 +239,49 @@ export const getBlogById = async (req, res) => {
 
 export const getRecentBlogs = async (req, res) => {
     try {
-        const blogs = await Blog.find({})
-            .populate("author", "userName profilePicture")
-            .sort({ createdAt: -1 })
-            .limit(10);
+        const blogs = await Blog.aggregate([
+            {
+                $lookup: {
+                    from: "comments",
+                    localField: "_id",
+                    foreignField: "blog",
+                    as: "comments"
+                }
+            },
+            {
+                $addFields: {
+                    commentsCount: { $size: "$comments" },
+                    likesCount: { $size: { $ifNull: ["$likes", []] } }
+                }
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "author",
+                    foreignField: "_id",
+                    as: "author"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$author",
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $project: {
+                    "author.password": 0,
+                    "author.email": 0,
+                    "comments": 0
+                }
+            },
+            {
+                $sort: { createdAt: -1 }
+            },
+            {
+                $limit: 10
+            }
+        ]);
 
         return res.status(200).json({
             success: true,
