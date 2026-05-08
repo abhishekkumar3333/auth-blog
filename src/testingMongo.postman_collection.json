@@ -1,0 +1,734 @@
+{
+  "info": {
+    "_postman_id": "bd430d5e-4fa2-4852-b320-c43399047eef",
+    "name": "testingMongo",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "45170813",
+    "_collection_link": "https://go.postman.co/collection/45170813-bd430d5e-4fa2-4852-b320-c43399047eef?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "register",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"userName\": \"abhi\",\r\n    \"email\": \"abhishekatter3@gmail.com\",\r\n    \"password\": \"abhi@123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{testingMongo}}/user/register",
+              "host": [
+                "{{testingMongo}}"
+              ],
+              "path": [
+                "user",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"abhishekatter3@gmail.com\",\r\n    \"password\": \"abhi@123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{testingMongo}}/user/login",
+              "host": [
+                "{{testingMongo}}"
+              ],
+              "path": [
+                "user",
+                "login"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "login",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\": \"abhishekatter3@gmail.com\",\r\n    \"password\": \"abhi@123\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{testingMongo}}/user/login",
+                  "host": [
+                    "{{testingMongo}}"
+                  ],
+                  "path": [
+                    "user",
+                    "login"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "238"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"ee-XPewWAiw2jsNYBYOUR2KFohVANM\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 13 Apr 2026 06:13:09 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"User logged in successfully\",\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZDcyYWRjZWViNWJjNDVjMmZkMTYxOSIsImlhdCI6MTc3NjA2MDc4OSwiZXhwIjoxNzc2MDY0Mzg5fQ.aDFSxOhnKf0R0tjDEsC42_3Ky1j_qo1KbsuPI3xDCC0\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "update-profile",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{Token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "bio",
+                  "value": "i m a full stack developer",
+                  "type": "text",
+                  "uuid": "9d3df16b-2d6a-4453-a7c2-ff475ae98dbc"
+                },
+                {
+                  "key": "profilePicture",
+                  "type": "file",
+                  "uuid": "ca21f999-7007-4d2c-a206-0e98fe35c618",
+                  "src": "/C:/Users/hp/Downloads/teamwork-making-online-blog.jpg"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{testingMongo}}/user/profile",
+              "host": [
+                "{{testingMongo}}"
+              ],
+              "path": [
+                "user",
+                "profile"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Follow-User",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{Token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "bio",
+                  "value": "i m a full stack developer",
+                  "type": "text",
+                  "uuid": "9d3df16b-2d6a-4453-a7c2-ff475ae98dbc"
+                },
+                {
+                  "key": "profilePicture",
+                  "type": "file",
+                  "uuid": "ca21f999-7007-4d2c-a206-0e98fe35c618",
+                  "src": "/C:/Users/hp/Downloads/teamwork-making-online-blog.jpg"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{testingMongo}}/user/follow/69d738e8b8380e61dbeee273",
+              "host": [
+                "{{testingMongo}}"
+              ],
+              "path": [
+                "user",
+                "follow",
+                "69d738e8b8380e61dbeee273"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "add-Bookmark",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{Token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{testingMongo}}/user/bookmark/69d76b95ed77da1b7cd31a9e",
+              "host": [
+                "{{testingMongo}}"
+              ],
+              "path": [
+                "user",
+                "bookmark",
+                "69d76b95ed77da1b7cd31a9e"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-Bookmark",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{Token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{testingMongo}}/user/bookmarks",
+              "host": [
+                "{{testingMongo}}"
+              ],
+              "path": [
+                "user",
+                "bookmarks"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Blog",
+      "item": [
+        {
+          "name": "Crete-Blog",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{Token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "third-Blog-7",
+                  "type": "text",
+                  "uuid": "35d9f684-a51c-452c-919f-a0c441dc4057"
+                },
+                {
+                  "key": "description",
+                  "value": "Hello and welcome to my Blog3",
+                  "type": "text",
+                  "uuid": "bffd80c0-c8df-4642-8151-8428e8d81590"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "uuid": "223b5965-7722-4824-af2b-8e18c5830bbb",
+                  "src": [
+                    "/C:/Users/hp/Downloads/Pharmaceutical Industry Regulations India _ Global Regulatory Updates & Compliance.html",
+                    "/C:/Users/hp/Pictures/Screenshot 2026-05-08 095217.png"
+                  ]
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{testingMongo}}/blog/create",
+              "host": [
+                "{{testingMongo}}"
+              ],
+              "path": [
+                "blog",
+                "create"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Crete-Blog",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "title",
+                      "value": "First-Blog",
+                      "type": "text",
+                      "uuid": "35d9f684-a51c-452c-919f-a0c441dc4057"
+                    },
+                    {
+                      "key": "description",
+                      "value": "Hello and welcome to my Blog",
+                      "type": "text",
+                      "uuid": "bffd80c0-c8df-4642-8151-8428e8d81590"
+                    },
+                    {
+                      "key": "image",
+                      "type": "file",
+                      "uuid": "d6ec7ffb-da17-4061-9510-f47adbee337b",
+                      "src": "/C:/Users/hp/Downloads/technology-communication-icons-symbols-concept.jpg"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{testingMongo}}/blog/create",
+                  "host": [
+                    "{{testingMongo}}"
+                  ],
+                  "path": [
+                    "blog",
+                    "create"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "318"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"13e-4uv2kSOay99TZyvBZfuqnv6Nfng\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 09 Apr 2026 09:04:21 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Blog created successfully\",\n    \"blog\": {\n        \"title\": \"First-Blog\",\n        \"description\": \"Hello and welcome to my Blog\",\n        \"image\": \"uploads\\\\technology-communication-icons-symbols-concept.jpg\",\n        \"_id\": \"69d76b95ed77da1b7cd31a9e\",\n        \"createdAt\": \"2026-04-09T09:04:21.217Z\",\n        \"updatedAt\": \"2026-04-09T09:04:21.217Z\",\n        \"__v\": 0\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "like-Blog",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{Token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"abhishekatter3@gmail.com\",\r\n    \"password\": \"abhi@123\"\r\n}"
+            },
+            "url": {
+              "raw": "{{testingMongo}}/blog/like/69d76b95ed77da1b7cd31a9e",
+              "host": [
+                "{{testingMongo}}"
+              ],
+              "path": [
+                "blog",
+                "like",
+                "69d76b95ed77da1b7cd31a9e"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "search-blog",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{Token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{testingMongo}}/blog/search?q=third",
+              "host": [
+                "{{testingMongo}}"
+              ],
+              "path": [
+                "blog",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "third"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-trending",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{Token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{testingMongo}}/blog/trending",
+              "host": [
+                "{{testingMongo}}"
+              ],
+              "path": [
+                "blog",
+                "trending"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Comment",
+      "item": [
+        {
+          "name": "Add-comment",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{Token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"text\": \" good blog part 2\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{testingMongo}}/comment/add/69d8a737e8503b8ddc7374f6",
+              "host": [
+                "{{testingMongo}}"
+              ],
+              "path": [
+                "comment",
+                "add",
+                "69d8a737e8503b8ddc7374f6"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-comment",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{Token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"abhishekatter3@gmail.com\",\r\n    \"password\": \"abhi@123\"\r\n}"
+            },
+            "url": {
+              "raw": "{{testingMongo}}/comment/get/69d8a737e8503b8ddc7374f6",
+              "host": [
+                "{{testingMongo}}"
+              ],
+              "path": [
+                "comment",
+                "get",
+                "69d8a737e8503b8ddc7374f6"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete-comment",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{Token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"abhishekatter3@gmail.com\",\r\n    \"password\": \"abhi@123\"\r\n}"
+            },
+            "url": {
+              "raw": "{{testingMongo}}/comment/delete/69d8b5b7bbef7eba006b5869",
+              "host": [
+                "{{testingMongo}}"
+              ],
+              "path": [
+                "comment",
+                "delete",
+                "69d8b5b7bbef7eba006b5869"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "reply-comment",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{Token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"text\": \"thanks bro\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{testingMongo}}/comment/reply/69d8d4b7c461a265e9d3bf12",
+              "host": [
+                "{{testingMongo}}"
+              ],
+              "path": [
+                "comment",
+                "reply",
+                "69d8d4b7c461a265e9d3bf12"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "like-comment",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{Token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"text\": \"thanks bro\"\r\n}"
+            },
+            "url": {
+              "raw": "{{testingMongo}}/comment/like/69d8d48bc461a265e9d3bf0e",
+              "host": [
+                "{{testingMongo}}"
+              ],
+              "path": [
+                "comment",
+                "like",
+                "69d8d48bc461a265e9d3bf0e"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-all",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{testingMongo}}/comment/getall/69d76b95ed77da1b7cd31a9e?page=2& limit=2",
+              "host": [
+                "{{testingMongo}}"
+              ],
+              "path": [
+                "comment",
+                "getall",
+                "69d76b95ed77da1b7cd31a9e"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "2"
+                },
+                {
+                  "key": " limit",
+                  "value": "2"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
